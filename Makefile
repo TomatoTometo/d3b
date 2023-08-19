@@ -6,7 +6,6 @@ BUILD_DIR=$(CURDIR)/build
 setup-relwithdebinfo:
 		mkdir -p $(BUILD_DIR)/relwithdebinfo && \
 		cmake -B $(BUILD_DIR)/relwithdebinfo \
-		-G"MinGW Makefiles" \
 		-DCMAKE_BUILD_TYPE=RelWithDebInfo && \
 		cmake --install $(BUILD_DIR)/relwithdebinfo
 
@@ -14,7 +13,6 @@ setup-relwithdebinfo:
 setup-minsizerel:
 		mkdir -p $(BUILD_DIR)/minsizerel && \
 		cmake -B $(BUILD_DIR)/minsizerel \
-		-G"MinGW Makefiles" \
 		-DCMAKE_BUILD_TYPE=MinSizeRel && \
 		cmake --install $(BUILD_DIR)/minsizerel
 
@@ -22,7 +20,6 @@ setup-minsizerel:
 setup-debug:
 		mkdir -p $(BUILD_DIR)/debug && \
 		cmake -B $(BUILD_DIR)/debug \
-		-G"MinGW Makefiles" \
 		-DCMAKE_BUILD_TYPE=Debug && \
 		cmake --install $(BUILD_DIR)/debug
 
@@ -30,7 +27,6 @@ setup-debug:
 setup-release:
 		mkdir -p $(BUILD_DIR)/release && \
 		cmake -B $(BUILD_DIR)/release \
-		-G"MinGW Makefiles" \
 		-DCMAKE_BUILD_TYPE=Release && \
 		cmake --install $(BUILD_DIR)/release
 
