@@ -75,7 +75,7 @@ if (BOOST_ZIP_EXTRACTION_DONE AND BOOST_LIB_INSTALLATION_DONE)
   ### Suppress the warning about unknown dependencies for new Boost versions
   set(Boost_NO_WARN_NEW_VERSIONS TRUE)
 
-  find_package(Boost REQUIRED COMPONENTS program_options)
+  find_package(Boost REQUIRED COMPONENTS program_options filesystem)
 
   include_directories(${Boost_INCLUDE_DIRS})
 

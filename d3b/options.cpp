@@ -11,7 +11,6 @@ namespace d3b
   namespace
   {
     po::variables_map vm_;
-    po::options_description desc_;
   }
 
   namespace detail
@@ -33,7 +32,7 @@ namespace d3b
       po::options_description desc("Allowed options");
       desc.add_options()
         ("help", "produce help message")
-        ("input", po::value<std::string>(), "input file")
+        ("d3b-database", po::value<std::string>(), "input file")
         ("output", po::value<std::string>(), "output file");
 
       return desc;

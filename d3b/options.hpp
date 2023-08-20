@@ -23,9 +23,9 @@ namespace d3b
 
   ///////////////////////////////////////////////////////////////////
   template<typename T>
-  struct options_as
+  struct option_as
   {
-    static T get_argument(const std::string &arg)
+    static T get(const std::string &arg)
     {
       return T{};
     }
@@ -33,9 +33,9 @@ namespace d3b
 
   ///////////////////////////////////////////////////////////////////
   template <>
-  struct options_as<std::string>
+  struct option_as<std::string>
   {
-    static std::string get_argument(const std::string &arg)
+    static std::string get(const std::string &arg)
     {
       return detail::get_string_option(arg);
     }
@@ -43,9 +43,9 @@ namespace d3b
 
   ///////////////////////////////////////////////////////////////////
   template <>
-  struct options_as<uint32_t>
+  struct option_as<uint32_t>
   {
-    static uint32_t get_argument(const std::string &arg)
+    static uint32_t get(const std::string &arg)
     {
       return detail::get_uint32_option(arg);
     }

@@ -4,6 +4,7 @@
 #include <iostream>
 
 #include "d3b/options.hpp"
+#include "d3b/d3b_manager.hpp"
 
 int main(int argc, char** argv)
 {
@@ -14,7 +15,16 @@ int main(int argc, char** argv)
     return -0;
   }
 
-  Sleep(10000);
+  const auto d3b_file = d3b::option_as<std::string>::get("d3b-database");
+
+  std::cout << "d3b_file is " << d3b_file.c_str() << std::endl;
+
+  d3b::DBManager manager(d3b_file.c_str());
+
+  if(!manager.init())
+  {
+    std::cout << "Failed to initialize database" << std::endl;
+  }
 
   return 0;
 }

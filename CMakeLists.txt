@@ -18,5 +18,5 @@ add_subdirectory(d3b)
 # add the executable
 add_executable(d3b main.cpp)
 
-target_link_libraries(d3b options)
+target_link_libraries(d3b options d3b-manager)
 
