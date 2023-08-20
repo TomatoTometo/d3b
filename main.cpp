@@ -3,9 +3,16 @@
 
 #include <iostream>
 
+#include "d3b/options.hpp"
+
 int main(int argc, char** argv)
 {
-  std::cout << "\nTesting some linker fun: \n\n";
+  d3b::parse_command_options(argc, argv);
+  
+  if(d3b::help_option_specified())
+  {
+    return -0;
+  }
 
   Sleep(10000);
 
