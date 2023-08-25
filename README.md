@@ -17,4 +17,5 @@ Dancing Dog DataBase (d3b)
 ## Requirements
 
 - cmake version 3.27.3
+- googletest version 1.14.0
 

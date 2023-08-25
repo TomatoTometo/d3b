@@ -11,6 +11,7 @@ set(EXTERNAL_SOURCE_FOLDER "${CMAKE_CURRENT_SOURCE_DIR}/external")
 set(EXTERNAL_BINARY_FOLDER "${CMAKE_CURRENT_BINARY_DIR}/external")
 
 include(cmake/setup_boost.cmake)
+include(cmake/setup_googletest.cmake)
 
 add_subdirectory(d3b)
 

@@ -9,13 +9,6 @@ setup-relwithdebinfo:
 		-DCMAKE_BUILD_TYPE=RelWithDebInfo && \
 		cmake --install $(BUILD_DIR)/relwithdebinfo
 
-.PHONY: setup-minsizerel
-setup-minsizerel:
-		mkdir -p $(BUILD_DIR)/minsizerel && \
-		cmake -B $(BUILD_DIR)/minsizerel \
-		-DCMAKE_BUILD_TYPE=MinSizeRel && \
-		cmake --install $(BUILD_DIR)/minsizerel
-
 .PHONY: setup-debug
 setup-debug:
 		mkdir -p $(BUILD_DIR)/debug && \
@@ -31,27 +24,23 @@ setup-release:
 		cmake --install $(BUILD_DIR)/release
 
 .PHONY: setup
-setup: setup-relwithdebinfo setup-MinSizeRel setup-Debug setup-Release
+setup: setup-relwithdebinfo setup-debug setup-release
 
 ######################################################################
 .PHONY: relwithdebinfo
 relwithdebinfo:
 		cmake --build $(BUILD_DIR)/relwithdebinfo
 
-.PHONY: minsizerel
-minsizerel:
-		cmake --build $(BUILD_DIR)/minsizerel
-
 .PHONY: debug
 debug:
-		cmake --build $(BUILD_DIR)/debug
+		cmake --build $(BUILD_DIR)/debug --config debug
 
 .PHONY: release
 release:
-		cmake --build $(BUILD_DIR)/release
+		cmake --build $(BUILD_DIR)/release --config release
 
-.PHONY: All
-All: relwithdebinfo minsizerel debug delease
+.PHONY: all
+all: relwithdebinfo debug delease
 
 .PHONY: clean
 clean:
