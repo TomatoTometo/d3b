@@ -13,14 +13,16 @@ setup-relwithdebinfo:
 setup-debug:
 		mkdir -p $(BUILD_DIR)/debug && \
 		cmake -B $(BUILD_DIR)/debug \
-		-DCMAKE_BUILD_TYPE=Debug && \
+		-DCMAKE_BUILD_TYPE=Debug \
+		-DBUILD_SHARED_LIBS=OFF && \
 		cmake --install $(BUILD_DIR)/debug
 
 .PHONY: setup-release
 setup-release:
 		mkdir -p $(BUILD_DIR)/release && \
 		cmake -B $(BUILD_DIR)/release \
-		-DCMAKE_BUILD_TYPE=Release && \
+		-DCMAKE_BUILD_TYPE=Release \
+		-DBUILD_SHARED_LIBS=OFF && \
 		cmake --install $(BUILD_DIR)/release
 
 .PHONY: setup
