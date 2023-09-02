@@ -20,6 +20,8 @@ add_subdirectory(d3b)
 
 add_subdirectory(test)
 
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}) # @todo is this needed?
+
 # add the executable
 add_executable(d3b main.cpp)
 

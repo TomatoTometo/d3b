@@ -4,7 +4,7 @@
 #include <iostream>
 
 #include "d3b/options.hpp"
-#include "d3b/d3b_manager.hpp"
+#include "d3b/manager.hpp"
 
 int main(int argc, char** argv)
 {

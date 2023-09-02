@@ -1,4 +1,5 @@
 #include <iostream>
+#include <string>
 
 #include <boost/program_options.hpp>
 
@@ -27,6 +28,7 @@ namespace d3b
       return vm_[arg.c_str()].as<std::string>();
     }
 
+    //////////////////////////////////////////////////////////////////
     po::options_description setup_program_options()
     {
       po::options_description desc("Allowed options");

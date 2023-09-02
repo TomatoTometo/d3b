@@ -2,7 +2,7 @@
 #ifndef D3B_OPTIONS_HPP_
 #define D3B_OPTIONS_HPP_
 
-#include <string>
+class std::string;
 
 namespace d3b
 {
