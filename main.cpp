@@ -1,10 +1,13 @@
 
-#include <windows.h>
+// #include <windows.h>
+
+#include <memory>
 
 #include <iostream>
 
 #include "d3b/options.hpp"
 #include "d3b/manager.hpp"
+#include "d3b/file_io_interface.hpp"
 
 int main(int argc, char** argv)
 {
@@ -19,9 +22,9 @@ int main(int argc, char** argv)
 
   std::cout << "d3b_file is " << d3b_file.c_str() << std::endl;
 
-  d3b::DBManager manager(d3b_file.c_str());
+  d3b::DBManager manager(std::make_unique<d3b::DbFileIO>());
 
-  if(!manager.init())
+  if(!manager.init(d3b_file.c_str()))
   {
     std::cout << "Failed to initialize database" << std::endl;
   }

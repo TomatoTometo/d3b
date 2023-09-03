@@ -1,11 +1,8 @@
 #include <algorithm>
 #include <fstream>
+#include <memory>
 #include <string>
 #include <iostream> // delete
-
-#include <boost/filesystem.hpp>
-#include <boost/filesystem/fstream.hpp>
-#include <boost/tokenizer.hpp>
 
 #include "detail/misc_helpers.hpp"
 #include "manager.hpp"
@@ -14,96 +11,52 @@
 namespace d3b
 {
 
-using tokenizer = boost::tokenizer<boost::char_separator<char>>;
-
 //////////////////////////////////////////////////////////////////
-DBManager::DBManager(const std::string d3b_location) :
-  d3b_location_(std::move(d3b_location))
+DBManager::DBManager(std::unique_ptr<DbInterface> db_interface) :
+  db_interface_(std::move(db_interface))
 {
 
 }
 
 //////////////////////////////////////////////////////////////////
-bool DBManager::init()
+bool DBManager::init(const std::string& d3b_location)
 {
-  boost::filesystem::path d3b_path(d3b_location_.c_str());
+  // @todo check for error
+  db_interface_->init(d3b_location);
 
-  if (!boost::filesystem::exists(d3b_path)) 
+  std::vector<std::string> entries;
+  db_interface_->read(entries);
+
+  for (const auto& entry_str :entries)
   {
-    // @todo add return numbers
-    return false;
-  }
-
-  boost::filesystem::fstream db_file(d3b_path, std::ios::in);
-
-  if (db_file.is_open()) 
-  {
-    std::string entry_str;
-    while (std::getline(db_file, entry_str)) 
+    if (entry_str.empty()) continue;
+    
+    const size_t hash_delimiter = entry_str.find_first_of(";");
+    if (hash_delimiter == std::string::npos)
     {
-      const tokenizer tokens(entry_str, boost::char_separator<char>(";"));
-
-      const bool has_tags = (std::distance(tokens.begin(), tokens.end()) > 4);
-
-      auto token_itr = tokens.begin();
-
-      D3bEntry entry;
-
-      entry.entry_hash = (*token_itr);                    token_itr++;
-      entry.compressed = detail::to_bool((*token_itr));   token_itr++;
-      entry.filepah = (*token_itr);                       token_itr++;
-      entry.file_hash = (*token_itr);                     token_itr++;
-
-      // @todo check hash is good
-      
-      if (has_tags)
-      {
-        const tokenizer tags(*token_itr, boost::char_separator<char>(","));
-      
-        entry.tags = std::vector<std::string>(tags.begin(), tags.end());
-      }
-
-
-      db_.push_back(entry);
+      // @todo send this one to jail too
+      continue;
     }
-  
-    db_file.close();
+    if (entry_str.substr(0, hash_delimiter) != detail::hash1(entry_str.substr(hash_delimiter + 1, entry_str.size())))
+    {
+      // @todo if hash doesn't match, add to other array and warn the user
+      continue;
+    }
 
-    return true;
+    D3bEntry entry = detail::to_D3bEntry(entry_str);
+
+    db_.push_back(std::move(entry));
+    db_map_.emplace(entry.filepah, &db_.back());
   }
 
-  return false;
+  return true;
 }
 
 //////////////////////////////////////////////////////////////////
 void DBManager::sync()
 {
-  // @todo create a bak up
-  boost::filesystem::path d3b_path(d3b_location_.c_str());
-
-  // if (!boost::filesystem::exists(d3b_path)) 
-  // {
-  //   // @todo add return numbers
-  //   return;
-  // }
-  
-  // boost::filesystem::create_directories(d3b_path.parent_path());
-
-  std::ofstream db_file;
-  db_file.open(d3b_path.string()); // Create/overwrite the file
-
-  // boost::filesystem::ofstream db_file(d3b_path);
-
-  if (db_file.is_open()) 
-  {
-    for (const auto& entry : db_)
-    {
-      db_file << detail::to_str(entry) << std::endl;
-    }
-
-    db_file.flush();
-    db_file.close();
-  }
+  // @todo check return
+  db_interface_->sync(db_);
 }
 
 //////////////////////////////////////////////////////////////////
@@ -119,6 +72,12 @@ void DBManager::add_entry(const std::string& entry, const std::vector<std::strin
   {
     return;
   }
+
+  // @todo check if entry is already in the db
+  // @todo check if entry is a valid file
+  // @todo get the entry hash
+  // @todo ask user if they want to compress
+  //       if so, get the size of message, and provide status on process
 
   D3bEntry db_entry;
 

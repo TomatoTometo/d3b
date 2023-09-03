@@ -2,10 +2,12 @@
 #ifndef D3B_MANAGER_HPP_
 #define D3B_MANAGER_HPP_
 
+#include <map>
 #include <string>
 #include <vector>
 
 #include "types.hpp"
+#include "db_interface.hpp"
 
 namespace d3b
 {
@@ -14,13 +16,13 @@ namespace d3b
     public:
       
       //////////////////////////////////////////////////////////////////
-      DBManager(const std::string location);
+      DBManager(std::unique_ptr<DbInterface> db_interface);
 
       //////////////////////////////////////////////////////////////////
       ~DBManager() = default;
 
       //////////////////////////////////////////////////////////////////
-      bool init();
+      bool init(const std::string& d3b_location);
 
       //////////////////////////////////////////////////////////////////
       // void create();
@@ -36,10 +38,13 @@ namespace d3b
 
     private:
       
-      std::string d3b_location_;
+      std::unique_ptr<DbInterface> db_interface_;
 
       std::vector<D3bEntry> db_;
       std::vector<std::string> updates_; /// @todo make this a std::pair ? first is index, second is actual update
+
+      std::map<std::string, D3bEntry*> db_map_;
+
   };
 }
 
