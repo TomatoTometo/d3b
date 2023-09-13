@@ -24,6 +24,14 @@ namespace d3b
     std::string file_hash;
     std::vector<std::string> tags;
   };
+
+  /// ??
+  struct D3bHeader
+  {
+    std::string hash;
+    uint32_t entries;
+    uint32_t longest_entry;
+  };
 }
 
 #endif // D3B_TYPES_HPP_
